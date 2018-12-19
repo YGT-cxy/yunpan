@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ace编辑器</title>
+    <!-- <script>
+        if(top.location === self.location) {
+            window.location.href = 'index.html';
+        }
+    </script> -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <script src="lib/ace-builds-master/src-noconflict/ace.js"></script>
+    <script src="lib/ace-builds-master/src-noconflict/ext-language_tools.js"></script>
+<link href="css/ace.css" rel="stylesheet"></head>
+<body>
+    <div class="con">
+        <div class="tools" id="tools">
+            <a title="保存" href="javascript:;">
+                <i data-operation="save" class="tools-icon tools-save"></i>
+            </a>
+            <a title="撤销" href="javascript:;">
+                <i data-operation="undo" class="tools-icon tools-undo"></i>
+            </a>
+            <a title="重做" href="javascript:;">
+                <i data-operation="redo" class="tools-icon tools-redo"></i>
+            </a>
+            <a title="刷新" href="javascript:;">
+                <i data-operation="refresh" class="tools-icon tools-refresh"></i>
+            </a>
+            <a title="字体" href="javascript:;">
+                <i data-operation="font" class="tools-icon tools-font"></i>
+                <ul class="select select-font">
+                    <li title="14px"><i class="font-icon-active"></i>14px</li>
+                    <li class="select-active" title="16px"><i class="font-icon-active"></i>16px</li>
+                    <li title="18px"><i class="font-icon-active"></i>18px</li>
+                    <li title="20px"><i class="font-icon-active"></i>20px</li>
+                    <li title="22px"><i class="font-icon-active"></i>22px</li>
+                    <li title="24px"><i class="font-icon-active"></i>24px</li>
+                </ul>
+            </a>
+            <a title="代码风格" href="javascript:;">
+                <i data-operation="theme" class="tools-icon tools-theme"></i>
+                <ul class="select select-theme">
+                    <li title="ambiance"><i class="font-icon-active"></i>ambiance</li>
+                    <li title="chaos"><i class="font-icon-active"></i>chaos</li>
+                    <li title="chrome"><i class="font-icon-active"></i>chrome</li>
+                    <li title="clouds"><i class="font-icon-active"></i>clouds</li>
+                    <li title="clouds_midnight"><i class="font-icon-active"></i>clouds_midnight</li>
+                    <li title="cobalt"><i class="font-icon-active"></i>cobalt</li>
+                    <li title="crimson_editor"><i class="font-icon-active"></i>crimson_editor</li>
+                    <li title="dawn"><i class="font-icon-active"></i>dawn</li>
+                    <li title="dracula"><i class="font-icon-active"></i>dracula</li>
+                    <li title="dreamweaver"><i class="font-icon-active"></i>dreamweaver</li>
+                    <li title="eclipse"><i class="font-icon-active"></i>eclipse</li>
+                    <li title="github"><i class="font-icon-active"></i>github</li>
+                    <li title="gob"><i class="font-icon-active"></i>gob</li>
+                    <li title="gruvbox"><i class="font-icon-active"></i>gruvbox</li>
+                    <li title="idle_fingers"><i class="font-icon-active"></i>idle_fingers</li>
+                    <li title="iplastic"><i class="font-icon-active"></i>iplastic</li>
+                    <li title="katzenmilch"><i class="font-icon-active"></i>katzenmilch</li>
+                    <li title="kr_theme"><i class="font-icon-active"></i>kr_theme</li>
+                    <li title="kuroir"><i class="font-icon-active"></i>kuroir</li>
+                    <li title="merbivore"><i class="font-icon-active"></i>merbivore</li>
+                    <li title="merbivore_soft"><i class="font-icon-active"></i>merbivore_soft</li>
+                    <li title="mono_industrial"><i class="font-icon-active"></i>mono_industrial</li>
+                    <li class="select-active" title="monokai"><i class="font-icon-active"></i>monokai</li>
+                    <li title="pastel_on_dark"><i class="font-icon-active"></i>pastel_on_dark</li>
+                    <li title="solarized_dark"><i class="font-icon-active"></i>solarized_dark</li>
+                    <li title="solarized_light"><i class="font-icon-active"></i>solarized_light</li>
+                    <li title="sqlserver"><i class="font-icon-active"></i>sqlserver</li>
+                    <li title="terminal"><i class="font-icon-active"></i>terminal</li>
+                    <li title="textmate"><i class="font-icon-active"></i>textmate</li>
+                    <li title="tomorrow"><i class="font-icon-active"></i>tomorrow</li>
+                    <li title="tomorrow_night"><i class="font-icon-active"></i>tomorrow_night</li>
+                    <li title="tomorrow_night_blue"><i class="font-icon-active"></i>tomorrow_night_blue</li>
+                    <li title="tomorrow_night_bright"><i class="font-icon-active"></i>tomorrow_night_bright</li>
+                    <li title="tomorrow_night_eighties"><i class="font-icon-active"></i>tomorrow_night_eighties</li>
+                    <li title="twilight"><i class="font-icon-active"></i>twilight</li>
+                    <li title="vibrant_ink"><i class="font-icon-active"></i>vibrant_ink</li>
+                    <li title="xcode"><i class="font-icon-active"></i>xcode</li>
+                </ul>
+            </a>
+            <a title="设置" href="javascript:;">
+                <i data-operation="set" class="tools-icon tools-set"></i>
+            </a>
+        </div>
+        <div id="editor"></div>
+    </div>
+<script type="text/javascript" src="js/jquery.js"></script><script type="text/javascript" src="js/ace.js"></script></body>
+</html>

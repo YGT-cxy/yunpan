@@ -1,0 +1,168 @@
+@font-face {
+  font-family: 'icomoon';
+  src: url(./../font/icomoon.eot);
+  src: url(./../font/icomoon.eot#iefix) format('embedded-opentype'), url(./../font/icomoon.ttf) format('truetype'), url(./../font/icomoon.woff) format('woff'), url(./../images/icomoon.svg#icomoon) format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+.icon {
+  display: inline-block;
+  margin-right: 6px;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  font-family: "icomoon";
+  font-size: 14px;
+  font-style: normal;
+  color: #eee;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.icon-close:before {
+  content: "\E5CD";
+}
+.icon-full:before {
+  content: "\E989";
+}
+.icon-min:before {
+  content: "\E903";
+}
+.icon-email:before {
+  content: "\E945";
+}
+.icon-user:before {
+  content: "\F007";
+}
+.icon-password:before {
+  content: "\E904";
+}
+.icon-www:before {
+  content: "\F0AC";
+}
+html,
+body {
+  height: 100%;
+}
+.con {
+  height: 100%;
+}
+.tools {
+  padding-left: 10px;
+  height: 30px;
+  background: #333;
+  border-bottom: 1px solid #888;
+}
+.tools a {
+  position: relative;
+  display: block;
+  float: left;
+  height: 30px;
+}
+.tools a:hover {
+  background: #000;
+}
+.tools-icon {
+  display: inline-block;
+  padding: 5px 6px 0 6px;
+  width: 30px;
+  height: 20px;
+  line-height: 20px;
+  speak: none;
+  color: #eee;
+  font-size: 16px;
+  font-family: "icomoon";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  text-align: center;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.tools-save:before {
+  content: "\E962";
+}
+.tools-undo:before {
+  content: "\E967";
+}
+.tools-redo:before {
+  content: "\E968";
+}
+.tools-refresh:before {
+  content: "\EA2E";
+}
+.tools-font:before {
+  content: "\E900";
+}
+.tools-font:after {
+  content: "\E5C5";
+}
+.tools-theme:before {
+  content: "\E901";
+}
+.tools-theme:after {
+  content: "\E5C5";
+}
+.tools-set:before {
+  content: "\E902";
+}
+.select {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 30px;
+  margin: 0;
+  padding: 4px 0;
+  list-style: none;
+  z-index: 999;
+  background: #333;
+}
+.select li {
+  position: relative;
+  padding: 2px 6px 2px 16px;
+  height: 20px;
+  line-height: 20px;
+  color: #fff;
+  font-size: 14px;
+}
+.select li:hover {
+  background: #999;
+}
+.select .font-icon-active {
+  display: inline-block;
+  position: absolute;
+  left: 4px;
+  top: 7px;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+}
+.select .select-active .font-icon-active {
+  background: #2e2;
+}
+.select-theme {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+#editor {
+  position: fixed;
+  top: 31px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-size: 16px;
+}
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 12px 20px;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.3);
+}

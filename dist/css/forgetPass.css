@@ -1,0 +1,212 @@
+@font-face {
+  font-family: 'icomoon';
+  src: url(./../font/icomoon.eot);
+  src: url(./../font/icomoon.eot#iefix) format('embedded-opentype'), url(./../font/icomoon.ttf) format('truetype'), url(./../font/icomoon.woff) format('woff'), url(./../images/icomoon.svg#icomoon) format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+.icon {
+  display: inline-block;
+  margin-right: 6px;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  font-family: "icomoon";
+  font-size: 14px;
+  font-style: normal;
+  color: #eee;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.icon-close:before {
+  content: "\E5CD";
+}
+.icon-full:before {
+  content: "\E989";
+}
+.icon-min:before {
+  content: "\E903";
+}
+.icon-email:before {
+  content: "\E945";
+}
+.icon-user:before {
+  content: "\F007";
+}
+.icon-password:before {
+  content: "\E904";
+}
+.icon-www:before {
+  content: "\F0AC";
+}
+@charset "UTF-8";
+html,
+body {
+  height: 100%;
+  background: url(./../images/login_bj.jpg) no-repeat;
+  background-size: 100% 100%;
+}
+.main {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.15);
+  background: #fff;
+}
+.logo {
+  margin: 0;
+  width: 420px;
+  height: 57px;
+  line-height: 57px;
+  color: #868f96;
+  font-size: 18px;
+  text-align: center;
+  background: #f8fbfb;
+}
+.logo .logo-img {
+  margin-right: 10px;
+  width: 46px;
+  height: 46px;
+  vertical-align: middle;
+}
+.content {
+  padding: 20px 40px;
+}
+.step2 {
+  display: none;
+}
+.form-group {
+  position: relative;
+  margin-top: 4px;
+}
+.form-group .code-box {
+  width: 332px;
+  height: 38px;
+}
+.form-group .code-box .input-group {
+  width: 120px;
+  font-size: 16px;
+  letter-spacing: 16px;
+  border: 1px solid #dcdcdc;
+  vertical-align: middle;
+}
+.form-group .code-box .btn {
+  width: 200px;
+  height: 36px;
+  line-height: 36px;
+  font-size: 14px;
+}
+.form-group .icon-box {
+  width: 332px;
+  height: 38px;
+  font-size: 0;
+  border: 1px solid #dcdcdc;
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+.form-group .label-icon {
+  display: inline-block;
+  width: 30px;
+  height: 36px;
+  line-height: 36px;
+  font-family: "icomoon";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  text-align: center;
+  line-height: 1;
+  vertical-align: middle;
+}
+.form-group .label-icon:before {
+  display: block;
+  height: 36px;
+  line-height: 36px;
+}
+.form-group .input-group {
+  display: inline-block;
+  padding-left: 6px;
+  width: 300px;
+  height: 36px;
+  line-height: 36px;
+  font-size: 14px;
+  color: #c1c1c1;
+  border: none;
+  outline: none;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+.form-group .link-item {
+  color: #3bc0c3;
+  text-decoration: none;
+}
+.form-group .link-item + .link-item {
+  margin-left: 10px;
+}
+.form-group .form-message {
+  padding: 2px;
+  font-size: 12px;
+  color: #888;
+}
+.form-group .btn {
+  width: 100%;
+  height: 44px;
+  font-size: 18px;
+}
+.btn {
+  display: inline-block;
+  padding: 0 18px;
+  color: #fff;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  background: #bbb;
+  text-decoration: none;
+  outline: none;
+  cursor: pointer;
+  vertical-align: middle;
+}
+.btn-sign {
+  background: #3bc0c3;
+}
+.btn-sign:hover {
+  background: #5FCDCD;
+}
+.btn-disabled {
+  background: #bbb;
+  cursor: not-allowed;
+}
+.btn-disabled:hover {
+  background: #bbb;
+}
+.shade {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+}
+.text-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  padding: 10px 20px;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #333;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+.text-center::selection {
+  background: none;
+}
+.text-error {
+  color: #dd0a35 !important;
+}

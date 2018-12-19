@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>修改密码</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <!-- <script>
+        if(top.location === self.location) {
+            window.location.href = 'index.html';
+        }
+    </script> -->
+<link href="css/editPass.css" rel="stylesheet"></head>
+<body>
+    <div class="content">
+        <form id="form" action="">
+            <div class="editpass">
+                <div class="clearfix">
+                    <div class="form-group">
+                        <label class="label-group" for="password">原密码:</label>
+                        <input id="password" class="input-group" name="password" type="text">
+                    </div>
+                    <div class="message"></div>
+                </div>
+
+                <div class="clearfix">
+                    <div class="form-group">
+                        <label class="label-group" for="repassword">新密码:</label>
+                        <input id="repassword" class="input-group" name="repassword" type="password">
+                    </div>
+                    <div class="message"></div>
+                </div>
+
+                <div class="clearfix">
+                    <div class="form-group">
+                        <label class="label-group" for="repassword2">确认密码:</label>
+                        <input id="repassword2" class="input-group" name="repassword2" type="password">
+                    </div>
+                    <div class="message"></div>
+                </div>
+
+                <div class="btns">
+                    <button id="sub" class="btn" type="button">确定</button>
+                </div>
+            </div>
+        </form>
+    </div>
+<script type="text/javascript" src="js/jquery.js"></script><script type="text/javascript" src="js/editPass.js"></script></body>
+</html>
