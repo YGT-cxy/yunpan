@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>用户文件</title>
+    <link rel="stylesheet" href="${require('./../css/normalize.css')}">
+    <link rel="stylesheet" href="${require('./../lib/webuploader-0.1.5/dist/webuploader.css')}">
+    <!-- <script>
+        if(top.location === self.location) {
+            window.location.href = 'index.html';
+        }
+    </script> -->
+</head>
+<body>
+    <div class="content">
+        <!-- 重新加载和面包屑导航 -->
+        <div id="nav">
+            <ul class="clearfix" data-path="">
+                <li class="nav-item" data-path="">目录</li>
+            </ul>
+            <button id="reset" class="btn-reset" type="button" title="刷新"></button>
+        </div>
+        <!-- 操作 -->
+        <div id="operation">
+            <button id="btn_create" class="btn btn-default" type="button">新建文件</button>
+            <button id="btn_update" class="btn btn-default" type="button">上传文件</button>
+            <button id="btn_stickup" class="btn btn-default" type="button">粘贴文件(夹)</button>
+        </div>
+        <!-- 新建文件的面板 -->
+        <div id="create_file" class="shade" data-operation="close">
+            <div class="panel box-center">
+                <div class="panel-head">
+                    <h2 class="panel-title">新建文件<i class="icon icon-close" data-operation="close"></i></h2>
+                </div>
+                <!-- dir-active || file-active -->
+                <div class="panel-body file-active">
+                    <div class="type-head">
+                        <p class="type-title">类型</p>
+                        <div class="type-con">
+                            <div class="type-radio" data-operation="file">
+                                <i class="icon icon-radio" data-operation="file"></i>
+                                <span data-operation="file">文件</span>
+                            </div>
+                            <div class="type-radio" data-operation="dir">
+                                <i class="icon icon-radio" data-operation="dir"></i>
+                                <span data-operation="dir">文件夹</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="file-con file-import">
+                        <div class="file-group">
+                            <div class="file-select">
+                                <label class="group-title" for="file_type">文件类型</label>
+                                <input id="file_type" class="group-input" type="text" readonly="true" data-operation="select" placeholder="请选择类型">
+                                <i class="icon icon-select"></i>
+                            </div>
+                            <!-- <div class="select-model">
+                                <ul>
+                                    <li>请选择类型</li>
+                                    <li>TXT</li>
+                                    <li>PHP</li>
+                                    <li>JS</li>
+                                    <li>CSS</li>
+                                    <li>HTML</li>
+                                </ul>
+                            </div> -->
+                        </div>
+
+                        <div class="file-group">
+                            <label class="group-title" for="file_name">文件名</label>
+                            <input id="file_name" class="group-input" type="text" data-operation="input" placeholder="无需填写后缀名">
+                        </div>
+                        <div class="file-group text-center">
+                            <button class="btn btn-create" type="button" data-operation="create_file">创建文件</button>
+                        </div>
+                    </div>
+
+                    <div class="file-con dir-import">
+                        <div class="file-group">
+                            <label class="group-title" for="dir_name">文件夹名</label>
+                            <input id="dir_name" class="group-input" type="text" data-operation="input">
+                        </div>
+                        <div class="file-group text-center">
+                            <button class="btn btn-create" type="button" data-operation="create_dir">创建文件夹</button>
+                        </div>
+                    </div>
+                    <div class="text-message"></div>
+                </div>
+            </div>
+        </div>
+        <!-- 重命名文件的面板 -->
+        <div id="rename" class="shade" data-operation="close">
+            <div class="panel box-center">
+                <div class="panel-head">
+                    <h2 class="panel-title">文件(夹)重命名<i class="icon icon-close" data-operation="close"></i></h2>
+                </div>
+                <div class="panel-body text-center">
+                    <!-- 原名字，新名字，提示 -->
+                    <p class="file-name"></p>
+                    <input class="file-rename" type="text" placeholder="无需填写后缀名">
+                    <button class="btn" type="button" data-operation="sub">确定命名</button>
+                    <p class="text-message"></p>
+                </div>
+            </div>
+        </div>
+        <!-- 上传文件的面板 -->
+        <div id="uploader" class="shade">
+            <div class="panel box-center">
+                <div class="panel-head">
+                    <h2 class="panel-title">上传文件<i class="icon icon-close"></i></h2>
+                </div>
+                <div class="panel-body">
+                    <div class="btn-group">
+                        <div id="picker" class="btn-select">选择文件</div>
+                       <!--  <div class="file-module">
+                            <input type="file" data-operation="file">
+                            <button class="btn btn-file" type="button">选择文件</button>
+                        </div> -->
+                        <button id="ctlBtn" class="btn btn-default" type="button">全部上传</button>
+                    </div>
+                    <div class="con">
+                        <!-- 用来存放文件信息  TODO: 修改为使用div  -- 两种表现形式 -->
+                        <table class="uploading-list">
+                            <thead>
+                                <tr>
+                                    <th class="file-name">文件名</th>
+                                    <th class="file-size">大小</th>
+                                    <th class="file-status">状态</th>
+                                    <th class="file-operation" style="font-size: 14px;">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="thelist">
+                                <!-- <tr>
+                                    <td class="file-name">我是itext我是itext我是itext我是itext我是itext我是itext我是itext</td>
+                                    <td class="file-size">0KB</td>
+                                    <td class="file-status">
+                                        <div class="rate-module">
+                                            <div class="rate-bj">
+                                                <span class="rate-text">90%</span>
+                                                <span class="rate" style="width: 90%;"></span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="file-operation">
+                                        <button class="icon-btn icon-btn-start" type="button" title="开始上传">开始</button>
+                                        <button class="icon-btn icon-btn-reset" type="button" title="重新上传文件">重新</button>
+                                        <button class="icon-btn icon-btn-stop" type="button" title="停止上传">停止</button>
+                                        <button class="icon-btn icon-btn-del" type="button" title="删除上传文件">删除</button>
+                                    </td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 文件列表 -->
+        <div id="file">
+            <table class="file-list">
+                <thead>
+                    <tr>
+                        <th class="file-name">名称</th>
+                        <th class="file-size">大小</th>
+                        <th class="file-create">创建时间</th>
+                        <th class="file-update">修改时间</th>
+                        <th class="file-operation">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- <tr>
+                        <td class="file-name"><i class="icon icon-word"></i>我是一个word文档</td>
+                        <td class="file-size">1115kb</td>
+                        <td class="file-create">2018-11-05 13:20:10</td>
+                        <td class="file-update">2018-11-05 13:20:10</td>
+                        <td class="file-operation"></td>
+                    </tr>
+
+                    <tr class="file-dir">
+                        <td class="file-name"><i class="icon icon-dir"></i>文件夹</td>
+                        <td class="file-size">1115kb</td>
+                        <td class="file-create">2018-11-05 13:20:10</td>
+                        <td class="file-update">2018-11-05 13:20:10</td>
+                        <td class="file-operation"></td>
+                    </tr> -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- <div id="context_menu">
+            <ul>
+                <li class="item">复制</li>
+                <li class="item">剪切</li>
+                <li class="item" style="display: none;">粘贴</li>
+                <li class="item">重命名</li>
+                <li class="item">删除</li>
+            </ul>
+        </div> -->
+        <!-- 编辑器 -->
+        <!-- <div class="shade" style="display: block;">
+            <div class="editor-box">
+                <div class="head">
+                    <h4 class="head-title">阿斯蒂芬</h4>
+                    <div class="head-btn">
+                        <span  class="icon icon-full" title="全屏"></span>
+                        <span  class="icon icon-close" title="关闭编辑器"></span>
+                    </div>
+                </div>
+                <div class="con">
+                    <iframe src="ace.html?path=ygt&name=我是html文件.html&type=html"></iframe>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</body>
+</html>

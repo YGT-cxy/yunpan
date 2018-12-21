@@ -1,0 +1,94 @@
+// BFC清浮动
+.clearfix {
+    &:after {
+        content: "";
+        display: block;
+        clear: both;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
+    &:before {
+        content: "";
+        display: block;
+        clear: both;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
+}
+
+.content {
+    min-width: 600px;
+}
+
+.editpass {
+    margin: 50px auto 0;
+    width: 560px;
+    // position: absolute;
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
+}
+
+.form-group {
+    margin-top: 20px;
+    font-size: 0;
+    float: left;
+
+    & .label-group {
+        display: inline-block;
+        padding-right: 10px;
+        width: 100px;
+        height: 26px;
+        line-height: 26px;
+        font-size: 14px;
+        text-align: right;
+        box-sizing: border-box;
+        vertical-align: middle;
+    }
+
+    & .input-group {
+        display: inline-block;
+        width: 260px;
+        height: 26px;
+        line-height: 26px;
+        font-size: 14px;
+        outline: none;
+        border: 1px solid #bbb;
+        border-radius: 2px;
+        text-indent: 6px;
+        box-sizing: border-box;
+        vertical-align: middle;
+    }
+}
+
+.message {
+    margin-top: 20px;
+    padding-left: 10px;
+    float: left;
+    width: 200px;
+    height: 26px;
+    line-height: 26px;
+    font-size: 14px;
+    color: #db2d43;
+    box-sizing: border-box;
+}
+
+.btns {
+    margin-top: 20px;
+    padding-left: 100px;
+}
+
+.btn {
+    padding: 0 30px;
+    height: 30px;
+    font-size: 14px;
+    color: #fff;
+    border: none;
+    border-radius: 2px;
+    background: #21e6c1;
+    vertical-align: middle;
+    outline: none;
+    cursor: pointer;
+}

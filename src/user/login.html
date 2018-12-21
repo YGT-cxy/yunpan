@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>私有云 -- 登陆</title>
+    <link rel="stylesheet" href="${require('./../css/normalize.css')}">
+</head>
+<body>
+    <div class="container">
+        <div class="main">
+            <h1 class="logo">私有云<img class="logo-img" src="${require('./../images/logo.png')}" alt="">登陆账号</h1>
+            <form id="form" class="content">
+                <!-- 帐号 -->
+                <div class="form-group">
+                    <div class="icon-box">
+                        <label class="label-icon icon-user" for="username"></label>
+                        <input id="username" class="input-group" name="username" type="text" placeholder="登陆帐号">
+                    </div>
+                    <div class="form-message"></div>
+                </div>
+                <!-- 密码 -->
+                <div class="form-group">
+                    <div class="icon-box">
+                        <label class="label-icon icon-password" for="password"></label>
+                        <input id="password" class="input-group" name="password" type="password" placeholder="密码">
+                    </div>
+                    <div class="form-message"></div>
+                </div>
+                <div class="form-group">
+                    <button id="sub" class="btn btn-sign" data-option="login" type="button">登陆</button>
+                </div>
+                <div class="form-group">
+                    <a class="link-item" href="register.html">注册账号</a>
+                    <a class="link-item" href="forget-pass.html">忘记密码</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- 弹出层 -->
+        <!-- <div class="shade">
+            <p class="text-center">登陆成功!!!</p>
+        </div> -->
+    </div>
+</body>
+</html>

@@ -1,0 +1,162 @@
+// BFC清浮动
+.clearfix {
+    &:after {
+        content: "";
+        display: block;
+        clear: both;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
+    &:before {
+        content: "";
+        display: block;
+        clear: both;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
+}
+
+// CSS3的容器垂直水平居中
+.box-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+// 提示模态框样式
+.loading {
+    padding: 12px 20px;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #fff;
+    background: rgba(0,0,0,.3);
+    z-index: 10000;
+}
+
+// 模态弹窗的样式
+.modal {
+    font-size: 14px;
+    border: 1px solid #bbb;
+    background: #fff;
+    box-shadow: 0 0 20px rgba(0,0,0,.6);
+
+    & .modal-head {
+        position: relative;
+        background: #eee;
+
+        & .modal-title {
+            margin: 0;
+            padding: 10px 16px;
+            font-size: 16px;
+            font-weight: 300;
+        }
+        & .icon-close {
+            position: absolute;
+            right: 4px;
+            margin-right: 0;
+            font-size: 18px;
+            color: #000;
+        }
+    }
+
+    & .modal-body {
+        padding: 10px;
+        max-width: 500px;
+
+        & p {
+            margin: 0;
+            padding: 0;
+            line-height: 20px;
+        }
+    }
+
+    & .modal-foot {
+        padding-bottom: 10px;
+    }
+}
+
+// 面板的基本样式
+.panel {
+    width: 400px;
+    border: 1px solid #bbb;
+    background: #fff;
+    box-shadow: 0 0 20px rgba(0,0,0,.6);
+    overflow: hidden;
+
+    & .panel-head {
+        background: #eee;
+
+        & .panel-title {
+            margin: 0;
+            padding: 10px 12px;
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        & .icon-close {
+            position: absolute;
+            right: 0;
+            color: #000;
+        }
+    }
+
+    & .panel-body {}
+}
+
+// 遮罩层样式
+.shade {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 999;
+}
+
+// 文本居中
+.text-center {
+    text-align: center;
+}
+
+// 错误信息样式
+.text-message {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #fd0054;
+    text-align: center;
+}
+
+// 按钮基本样式
+.btn {
+    padding: 0 20px;
+    height: 30px;
+    font-size: 14px;
+    color: #fff;
+    border: none;
+    border-radius: 2px;
+    background: #21e6c1;
+    vertical-align: middle;
+    outline: none;
+    cursor: pointer;
+
+    & + .btn {
+        margin-left: 10px;
+    }
+
+    &-default {
+        height: 40px;
+        line-height: 40px;
+        color: #000;
+        border: 1px solid #bbb;
+        background: #fff;
+
+        &:hover {
+            border-color: #94d2e6;
+        }
+    }
+}

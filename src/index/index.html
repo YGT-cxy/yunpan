@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>私有云</title>
+    <link rel="stylesheet" href="${require('./../css/normalize.css')}">
+    <script>
+        /*判断是否登录超时*/
+        (function() {
+            if(localStorage.getItem('user')) {
+                var pastTime = JSON.parse(localStorage.getItem('time')).pastTime,
+                    time = new Date().getTime();
+                if(pastTime < time) {
+                    localStorage.clear();
+                    window.location.href = 'login.html';
+                    new Message('登录超时，请重新登录', 'error').alert();
+                }
+            } else {
+                localStorage.clear();
+                window.location.href = 'login.html';
+            }
+        } ());
+    </script>
+</head>
+<body>
+    <!-- content-hide -->
+    <div class="content">
+        <div id="head">
+            <h1 class="title">私有云</h1>
+            <div class="user">
+                <span></span>
+                <ul class="nav">
+                    <li id="editPass"><i class="icon icon-editPass"></i><span>修改密码</span></li>
+                    <li id="logout"><i class="icon icon-logout"></i><span>注销账户</span></li>
+                </ul>
+            </div>
+        </div>
+        <div id="nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="javascript:;"><i class="icon icon-user"></i>用户目录</a>
+                    <ul class="level">
+                        <li data-src="user-file.html?type=user"><a href="javascript:;"><i class="icon"></i>用户文件</a></li>
+                        <li data-src="user-file.html?type=public"><a href="javascript:;"><i class="icon"></i>公共目录</a></li>
+                    </ul>
+                </li>
+                <!-- <li data-src="public.html" class="nav-item"><a href="javascript:;"><i class="icon icon-public"></i>公共目录</a></li> -->
+                <!-- <li data-src="del.html" class="nav-item"><a href="javascript:;"><i class="icon icon-del"></i>回收站</a></li> -->
+                <li data-src="edit-pass.html" class="nav-item"><a href="javascript:;"><i class="icon icon-editPass"></i>修改密码</a></li>
+            </ul>
+            <div id="bar"></div>
+        </div>
+        <div id="main">
+            <div id="tab">
+                <ul class="tab-nav">
+                    <li class="active"><a class="tab-item" href="javascript:;" data-option="tab"><i class="icon icon-home"></i>用户信息</a></li>
+                </ul>
+            </div>
+            <div class="main-content">
+                <div class="iframe-wrap iframe-show">
+                    <iframe src="home.html"></iframe>
+                </div>
+            </div>
+        </div>
+        <div id="foot">
+            <p>版权归xxxx所有</p>
+        </div>
+    </div>
+</body>
+</html>
