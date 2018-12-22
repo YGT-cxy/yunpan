@@ -198,7 +198,7 @@
   line-height: 20px;
 }
 .modal .modal-foot {
-  padding-bottom: 10px;
+  padding: 0 10px 10px 10px;
 }
 .panel {
   width: 400px;

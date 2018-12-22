@@ -127,11 +127,12 @@ body {
   line-height: 20px;
   color: #fff;
   font-size: 14px;
+  white-space: nowrap;
 }
 .select li:hover {
   background: #999;
 }
-.select .font-icon-active {
+.select .icon-browser {
   display: inline-block;
   position: absolute;
   left: 4px;
@@ -140,7 +141,16 @@ body {
   height: 10px;
   border-radius: 100%;
 }
-.select .select-active .font-icon-active {
+.select .icon-active {
+  display: inline-block;
+  position: absolute;
+  left: 4px;
+  top: 7px;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+}
+.select .select-active .icon-active {
   background: #2e2;
 }
 .select-theme {
