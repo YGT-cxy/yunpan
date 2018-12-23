@@ -20,12 +20,88 @@
             </ul>
             <button id="reset" class="btn-reset" type="button" title="刷新"></button>
         </div>
-        <!-- 操作 -->
-        <div id="operation">
-            <button id="btn_create" class="btn btn-default" type="button">新建文件</button>
-            <button id="btn_update" class="btn btn-default" type="button">上传文件</button>
-            <button id="btn_stickup" class="btn btn-default" type="button">粘贴文件(夹)</button>
+        <!-- 操作 TODO:切换列表排序方式 -->
+        <div class="tools clearfix">
+            <div class="tools-btns">
+                <button id="btn_create" class="btn btn-default" type="button">新建文件</button>
+                <button id="btn_update" class="btn btn-default" type="button">上传文件</button>
+                <button id="btn_stickup" class="btn btn-default" type="button">粘贴文件(夹)</button>
+            </div>
+            <div class="load">载入中</div>
         </div>
+
+        <!-- 文件列表的头部栏目 -->
+        <div id="file-head" class="clearfix">
+            <div class="filename">名字</div>
+            <div class="resize filename-resize"></div>
+            <div class="filetype">类型</div>
+            <div class="resize filetype-resize"></div>
+            <div class="filesize">大小</div>
+            <div class="resize filesize-resize"></div>
+            <div class="filetime">修改时间</div>
+            <div class="resize filetime-resize"></div>
+        </div>
+
+        <!-- 文件列表排序方式 -->
+        <!-- TODO:处理#file带来的影响 -->
+        <div class="file-main">
+            <div class="file-content file-list-list">
+                <!-- 文件列表 -->
+                <!-- 文件图标 -->
+                <!-- <div class="file-item">
+                    <div class="file-name">
+                        <i class="icon-file icon-word"></i>
+                        <span title="双击名称重命名">我是一个word文档我是一个word文档我是一个word文档我是一个word文档</span>
+                    </div>
+                    <div class="file-type">word文件</div>
+                    <div class="file-size">100KB</div>
+                    <div class="file-time">2018-11-05 13:20:10</div>
+                    <div class="file-select"></div>
+                </div>
+                <div class="file-item">
+                    <div class="file-name">
+                        <i class="icon-file icon-word"></i>
+                        <span title="双击名称重命名">我是一个word文档我是一个word文档我是一个word文档我是一个word文档</span>
+                    </div>
+                    <div class="file-type">word文件</div>
+                    <div class="file-size">100KB</div>
+                    <div class="file-time">2018-11-05 13:20:10</div>
+                    <div class="file-select"></div>
+                </div> -->
+            </div>
+            <div class="file-foot">
+                <span id="file-amount"></span>
+            </div>
+            <!-- <table class="file-list">
+                <thead>
+                    <tr>
+                        <th class="file-name">名称</th>
+                        <th class="file-size">大小</th>
+                        <th class="file-create">创建时间</th>
+                        <th class="file-update">修改时间</th>
+                        <th class="file-operation">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="file-file">
+                        <td class="file-name"><i class="icon-file icon-word"></i>我是一个word文档</td>
+                        <td class="file-size">1115kb</td>
+                        <td class="file-create">2018-11-05 13:20:10</td>
+                        <td class="file-update">2018-11-05 13:20:10</td>
+                        <td class="file-operation"><a class="btn-img btn-img-download" data-operation="download" title="下载文件" herf="javascript:;"></a></td>
+                    </tr>
+
+                    <tr class="file-dir">
+                        <td class="file-name"><i class="icon-file icon-dir"></i>文件夹</td>
+                        <td class="file-size">1115kb</td>
+                        <td class="file-create">2018-11-05 13:20:10</td>
+                        <td class="file-update">2018-11-05 13:20:10</td>
+                        <td class="file-operation"><a class="btn-img btn-img-download" data-operation="download" title="下载文件" herf="javascript:;"></a></td>
+                    </tr>
+                </tbody>
+            </table> -->
+        </div>
+
         <!-- 新建文件的面板 -->
         <div id="create_file" class="shade" data-operation="close">
             <div class="panel box-center">
@@ -119,7 +195,7 @@
                         <button id="ctlBtn" class="btn btn-default" type="button">全部上传</button>
                     </div>
                     <div class="con">
-                        <!-- 用来存放文件信息  TODO: 修改为使用div  -- 两种表现形式 -->
+                        <!-- 用来存放文件信息 -->
                         <table class="uploading-list">
                             <thead>
                                 <tr>
@@ -153,38 +229,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- 文件列表 -->
-        <div id="file">
-            <table class="file-list">
-                <thead>
-                    <tr>
-                        <th class="file-name">名称</th>
-                        <th class="file-size">大小</th>
-                        <th class="file-create">创建时间</th>
-                        <th class="file-update">修改时间</th>
-                        <th class="file-operation">操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- <tr>
-                        <td class="file-name"><i class="icon icon-word"></i>我是一个word文档</td>
-                        <td class="file-size">1115kb</td>
-                        <td class="file-create">2018-11-05 13:20:10</td>
-                        <td class="file-update">2018-11-05 13:20:10</td>
-                        <td class="file-operation"></td>
-                    </tr>
-
-                    <tr class="file-dir">
-                        <td class="file-name"><i class="icon icon-dir"></i>文件夹</td>
-                        <td class="file-size">1115kb</td>
-                        <td class="file-create">2018-11-05 13:20:10</td>
-                        <td class="file-update">2018-11-05 13:20:10</td>
-                        <td class="file-operation"></td>
-                    </tr> -->
-                </tbody>
-            </table>
         </div>
 
         <!-- <div id="context_menu">

@@ -114,9 +114,18 @@ FileOrDir.showDir = function(path) {
         'path': path,
         'type': 'dir'
     };
+
+    $(document).ajaxStart(function(){
+        $('.load').show(200);
+    });
+
+    $(document).ajaxSuccess(function(){
+        $('.load').hide(200);
+    });
+
     new FileOrDir().ajax('tree', data, function(res) {
         var txtHtml = applyDataTemplate(res);
-        $('#file table tbody').html(txtHtml);
+        $('.file-content').html(txtHtml);
     }, function(error) {
         var errorText = JSON.parse(error.responseText);
         showLoading(errorCode(errorText.errorCode));
@@ -253,14 +262,25 @@ function applyDataTemplate(data) {
     }
     var txtHtml = '';
     for(var i = 0, leng = data.length; i < leng; i++) {
-        txtHtml  += `<tr id="${'file' + i}" class="file-${data[i].type}" data-type="${data[i].type}" data-basename="${data[i].basename}" data-extension="${data[i].extension}" data-json='${JSON.stringify(data[i])}'>
-                        <td class="file-name"><i class="icon-file icon-${data[i].extension ? data[i].extension: 'dir'}"></i>${data[i].basename}</td>
-                        <td class="file-size">${data[i].type === 'dir' ? '': bitToByte(data[i].size)}</td>
-                        <td class="file-create">${changeTime(data[i].filectime)}</td>
-                        <td class="file-update">${changeTime(data[i].filemtime)}</td>
-                        <td class="file-operation"><a class="btn-img btn-img-download" data-operation="download" title="下载文件" herf="javascript:;"></a></td>
-                    </tr>`;
+        // txtHtml  += `<tr id="${'file' + i}" class="file-${data[i].type}" data-type="${data[i].type}" data-basename="${data[i].basename}" data-extension="${data[i].extension}" data-json='${JSON.stringify(data[i])}'>
+        //                 <td class="file-name"><i class="icon-file icon-${data[i].extension ? data[i].extension: 'dir'}"></i>${data[i].basename}</td>
+        //                 <td class="file-size">${data[i].type === 'dir' ? '': bitToByte(data[i].size)}</td>
+        //                 <td class="file-create">${changeTime(data[i].filectime)}</td>
+        //                 <td class="file-update">${changeTime(data[i].filemtime)}</td>
+        //                 <td class="file-operation"><a class="btn-img btn-img-download" data-operation="download" title="下载文件" herf="javascript:;"></a></td>
+        //             </tr>`;
+        txtHtml += `<div id="${'file' + i}" class="file-item" data-type="${data[i].type}" data-basename="${data[i].basename}" data-extension="${data[i].extension}">
+                        <div class="file-name">
+                            <i class="icon-file icon-${data[i].extension ? data[i].extension: 'dir'}"></i>
+                            <span title="双击名称重命名">${data[i].basename}</span>
+                        </div>
+                        <div class="file-type">${data[i].type === 'dir'? '文件夹' : data[i].extension + ' 文件'}</div>
+                        <div class="file-size">${data[i].type === 'dir' ? '': bitToByte(data[i].size)}</div>
+                        <div class="file-time">${changeTime(data[i].filemtime)}</div>
+                        <div class="file-select"></div>
+                    </div>`;
     }
+    $('#file-amount').text(i + '个项目');
 
     return txtHtml;
 }
@@ -386,14 +406,14 @@ var treePath = '',  // 当前目录路径
 
     var catalogType = location.search.slice(1).split('=')[1] || 'user',  // 默认是用户目录
         treePathTxt = '';
+
     // 首次加载根目录数据
     if(catalogType === 'user') {
         $.ajax({
-            // url: 'http://kcloud.vowcloud.cn/api/v1/dir/root?token='+ localStorage.getItem('token'),
             url: 'http://kcloud.vowcloud.cn/api/v1/dir/root?token='+ TOKEN,
             type: 'GET',
             success: function(res) {
-                $('#file table').append($(applyDataTemplate(res.dir)));
+                $('.file-content').append($(applyDataTemplate(res.dir)));
             },
             error: function(error) {
                 errorCode(JSON.parse(error.responseText).errorCode);
@@ -417,6 +437,8 @@ var treePath = '',  // 当前目录路径
     } else {
         $('#btn_stickup').hide();
     }
+
+
 } ());
 
 // 重新加载页面
@@ -433,47 +455,71 @@ $('#nav').on('click', 'li', function() {
         return false;
     }
 
-    $('#file tbody').html('');  // 清空文件列表
+    $('.file-content').html('');  // 清空文件列表
     $this.nextAll().remove();  // // 删除最后的元素
     treePath = targetPath;  // 更新激活目录的path
     FileOrDir.showDir(targetPath);  // 发起读取目录请求
 });
 
 // 给文件夹类型添加引入移出的点击效果
-$('#file tbody').on('mouseover ', '.file-dir .file-name', function() {
-    $(this).parent().css({'background': '#eee', 'cursor': 'pointer'});
-}).on('mouseout', '.file-dir .file-name', function() {
-    $(this).parent().css({'background': '#fff', 'cursor': 'default'});
+// $('#file tbody').on('mouseover ', '.file-dir .file-name', function() {
+//     $(this).parent().css({'background': '#eee', 'cursor': 'pointer'});
+// }).on('mouseout', '.file-dir .file-name', function() {
+//     $(this).parent().css({'background': '#fff', 'cursor': 'default'});
+// });
+
+// 在文件列表里双击文件名字触发重命名事件
+$('.file-content').on('dblclick', '.file-name span', function(e) {
+    e.stopPropagation();
+    var $this = $(this),
+        fileName = $this.text(),
+        $elements = $(`<div class="textarea">
+                        <textarea>${fileName}</textarea>
+                    </div>`);
+    $this.html($elements);
+    $elements.find('textarea').focus().on('blur', function() {
+        var rename = $(this).html();
+        $this.text(rename);
+    });
 });
 
-// 在文件列表里单击文件名字触发的事件
-$('#file tbody').on('mousedown', '.file-name', function(e) {
-    $(this).attr('x', e.pageX).attr('y', e.pageY).off('click');
-}).on('mouseup', '.file-name', function(e) {
-    if (Math.abs(e.pageX - ($(this).attr('x') || 0)) <= 5 && Math.abs(e.pageY - ($(this).attr('y') || 0) <= 5)) {
-        $(this).on('click', function() {
-            openDirFile(this);
-        });
-    }
+// 在文件列表里双击文件触发的事件
+$('.file-content').on('dblclick', '.file-item', function(e) {
+    // console.log(this);
+    openDirFile(this);
+}).on('selectstart', function(e) {  // 取消点击选中文件列表里的文本  (BUG：无法点击选中文本)
+    return false;
 });
+
+
+// 在文件列表里单击文件名字触发的事件
+// $('#file tbody').on('mousedown', '.file-name', function(e) {
+//     $(this).attr('x', e.pageX).attr('y', e.pageY).off('click');
+// }).on('mouseup', '.file-name', function(e) {
+//     if (Math.abs(e.pageX - ($(this).attr('x') || 0)) <= 5 && Math.abs(e.pageY - ($(this).attr('y') || 0) <= 5)) {
+//         $(this).on('click', function() {
+//             openDirFile(this);
+//         });
+//     }
+// });
 
 // 进入下一级目录或打开文件(txt|php|html|js|css)或预览文件(pdf|images)
 function openDirFile(target) {
-    var parent = $(target).parent(),
-        fileName = parent.attr('data-basename');
+    var $this = $(target),
+        fileName = $this.attr('data-basename');
 
-    if(parent.attr('data-type') === 'dir') {  // 进入目录
-        var data = JSON.parse(parent.attr('data-json')),
-            filename = data.filename;  // 获取点击的文件名
-            treePath = treePath + '/' + filename;  //设置当前的目录路径
+    if($this.attr('data-type') === 'dir') {  // 进入目录
+        // var data = JSON.parse($this.attr('data-json')),
+            // filename = data.filename;  // 获取点击的文件名
+            treePath = treePath + '/' + fileName;  // 设置当前的目录路径
 
-        $('#nav ul').append('<li class="nav-item" data-path="' + treePath + '">' + filename + '</li>');
-        $('#file tbody').html('');
+        $('#nav ul').append('<li class="nav-item" data-path="' + treePath + '">' + fileName + '</li>');
+        $('.file-content').html('');
         // 发起查询目录请求
         FileOrDir.showDir(treePath);
 
     } else {  // 打开文件
-        var extension = parent.attr('data-extension'),  // 获取文件的后缀名类型
+        var extension = $this.attr('data-extension'),  // 获取文件的后缀名类型
             fileData = {
             'path': treePath,
             'name': fileName,
@@ -499,7 +545,7 @@ function openDirFile(target) {
                 openAceEditor(fileData);
                 break;
             default:
-                console.log('未知类型的文档，请联系开发者处理！');
+                showLoading('未知类型的文档，请联系开发者处理！');
         }
     }
 }
@@ -518,7 +564,7 @@ $('#file tbody').on('click', '.btn-img-download', function() {
 });
 
 // 显示右键菜单
-$('#file tbody').on('contextmenu', 'tr', function(e) {
+$('.file-content').on('contextmenu', '.file-item', function(e) {
     $('#context_menu').remove();
     var $this = $(this),
         menu = $(`<div id="context_menu">

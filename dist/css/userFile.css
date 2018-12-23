@@ -298,10 +298,6 @@ body {
   height: 100%;
   overflow-y: hidden;
 }
-.content {
-  padding: 20px 0;
-  font-family: '\5FAE\8F6F\96C5\9ED1';
-}
 #nav {
   position: relative;
   padding: 4px 0;
@@ -326,10 +322,10 @@ body {
   color: #4a4a48;
 }
 #nav .nav-item + .nav-item:before {
-  position: absolute;
-  left: 0;
   content: "/";
   display: inline-block;
+  position: absolute;
+  left: 0;
   width: 1px;
   height: 10px;
 }
@@ -358,10 +354,275 @@ body {
   background: url(./../images/icon-reset.png) no-repeat center center;
   background-size: 70% 70%;
 }
-#operation {
-  margin-top: 20px;
-  padding: 10px 20px;
+.tools {
+  margin-top: 10px;
+  padding: 6px 20px;
   background: #eee;
+}
+.tools .tools-btns {
+  float: left;
+}
+.tools .load {
+  display: none;
+  margin-left: 20px;
+  float: left;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+  color: #999;
+}
+#file-head {
+  padding-left: 10px;
+  padding-right: 20px;
+  height: 26px;
+  line-height: 26px;
+  font-size: 12px;
+  background: #fff;
+  border-bottom: 1px solid #e3e3e3;
+  box-shadow: 1px 2px 15px #dde;
+  z-index: 999;
+}
+#file-head > div {
+  float: left;
+  box-sizing: border-box;
+}
+#file-head .resize {
+  margin-left: -10px;
+  width: 20px;
+  height: 26px;
+  cursor: col-resize;
+}
+#file-head .filename {
+  padding-left: 20px;
+  width: calc(80% - 380px);
+  min-width: 180px;
+  border-right: 1px solid #eee;
+}
+#file-head .filetype {
+  margin-left: -10px;
+  padding-left: 10px;
+  min-width: 80px;
+  width: 90px;
+  border-right: 1px solid #eee;
+}
+#file-head .filesize {
+  margin-left: -10px;
+  padding-right: 10px;
+  min-width: 70px;
+  width: 80px;
+  text-align: right;
+  border-right: 1px solid #eee;
+}
+#file-head .filetime {
+  margin-left: -10px;
+  padding-left: 10px;
+  min-width: 150px;
+  width: 160px;
+  border-right: 1px solid #eee;
+}
+.file-main {
+  position: absolute;
+  top: 146px;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  min-width: 800px;
+  background: #fff;
+  overflow-y: auto;
+}
+.file-main::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.file-main::-webkit-scrollbar-thumb {
+  background-color: rgba(180, 180, 180, 0.2);
+  border-radius: 12px;
+  background-clip: padding-box;
+  border: 1px solid rgba(180, 180, 180, 0.4);
+  min-height: 28px;
+}
+.file-main::-webkit-scrollbar-track-piece {
+  background-color: rgba(180, 180, 180, 0.06);
+  border-radius: 3px;
+}
+.file-content {
+  padding: 10px 20px 40px 10px;
+}
+.file-foot {
+  position: fixed;
+  left: 20px;
+  bottom: 16px;
+  padding: 0 20px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 12px;
+  color: #bbb;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.9);
+}
+.file-foot span:after {
+  content: "";
+  display: inline-block;
+  position: relative;
+  top: 3px;
+  left: 2px;
+  width: 3px;
+  height: 14px;
+  background: #eee;
+}
+.file-foot span:before {
+  content: "";
+  display: inline-block;
+  position: relative;
+  top: 3px;
+  left: -2px;
+  width: 3px;
+  height: 14px;
+  background: #eee;
+}
+.file-list-list .file-item {
+  font-size: 12px;
+  height: 28px;
+  line-height: 28px;
+  overflow: hidden;
+}
+.file-list-list .file-item > div {
+  float: left;
+  height: 28px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: default;
+  box-sizing: border-box;
+}
+.file-list-list .file-item:nth-child(2n-1) {
+  background: #fffbf1;
+}
+.file-list-list .file-item:hover {
+  background: #cce8ff;
+}
+.file-list-list .file-name {
+  padding-left: 20px;
+  width: calc(80% - 380px);
+  min-width: 180px;
+}
+.file-list-list .file-name span {
+  cursor: text;
+}
+.file-list-list .textarea {
+  display: inline-block;
+  width: calc(100% - 30px);
+  height: 26px;
+  border: 1px solid #0C81F2;
+  vertical-align: middle;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.file-list-list .textarea textarea {
+  padding: 0;
+  width: 100%;
+  height: 26px;
+  line-height: 26px;
+  white-space: nowrap;
+  outline: none;
+  border: none;
+  resize: none;
+  /* 设置滚动条的样式 */
+}
+.file-list-list .textarea textarea::-webkit-scrollbar {
+  height: 0px;
+}
+.file-list-list .file-type {
+  padding-left: 10px;
+  min-width: 80px;
+  width: 90px;
+}
+.file-list-list .file-size {
+  padding-right: 10px;
+  min-width: 70px;
+  width: 80px;
+  text-align: right;
+}
+.file-list-list .file-time {
+  padding-left: 10px;
+  min-width: 150px;
+  width: 160px;
+}
+#context_menu {
+  display: none;
+  position: absolute;
+  background: #fff;
+  font-size: 14px;
+}
+#context_menu ul {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  border: 1px solid #bbb;
+}
+#context_menu .item {
+  padding: 0 20px;
+  width: 60px;
+  height: 36px;
+  line-height: 36px;
+  cursor: pointer;
+}
+#context_menu .item:hover {
+  background: #eee;
+}
+.editor-box {
+  position: relative;
+  margin: 40px auto 0;
+  width: 80%;
+  height: 80%;
+  z-index: 9998;
+  background: #221;
+}
+.editor-box .head {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  line-height: 30px;
+  color: #eee;
+  vertical-align: middle;
+}
+.editor-box .head .head-title {
+  margin: 0;
+  padding-left: 20px;
+  float: left;
+  color: #eee;
+  font-size: 16px;
+  font-weight: 300;
+}
+.editor-box .head .head-btn {
+  float: right;
+  height: 30px;
+}
+.editor-box .head .icon {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+}
+.editor-box .con {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  padding-bottom: 10px;
+  background: #bbb;
+}
+.editor-box iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+.editor-full {
+  margin: 0;
+  width: 100%;
+  height: 100%;
 }
 #create_file .type-head {
   height: 30px;
@@ -588,129 +849,4 @@ body {
 }
 #rename .btn {
   margin-top: 20px;
-}
-#file {
-  position: absolute;
-  top: 160px;
-  bottom: 20px;
-  margin: 0 20px;
-  min-width: 800px;
-  font-family: '\5FAE\8F6F\96C5\9ED1';
-  font-size: 14px;
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
-  overflow-y: scroll;
-}
-.file-list {
-  width: 100%;
-  border-collapse: collapse;
-  border-spacing: 0;
-  table-layout: fixed;
-}
-.file-list thead {
-  background: #eee;
-}
-.file-list th {
-  font-weight: 300;
-}
-.file-list tr {
-  height: 30px;
-  line-height: 30px;
-  border: 1px solid #bbb;
-}
-.file-list .file-name {
-  padding-left: 10px;
-  white-space: nowrap;
-}
-.file-list .file-size {
-  width: 80px;
-  text-align: center;
-}
-.file-list .file-create {
-  width: 150px;
-  white-space: nowrap;
-  overflow: hidden;
-}
-.file-list .file-update {
-  width: 150px;
-  white-space: nowrap;
-}
-.file-list .file-operation {
-  width: 80px;
-  text-align: center;
-}
-#context_menu {
-  display: none;
-  position: absolute;
-  background: #fff;
-  font-size: 14px;
-}
-#context_menu ul {
-  margin: 0;
-  padding-left: 0;
-  list-style: none;
-  border: 1px solid #bbb;
-}
-#context_menu .item {
-  padding: 0 20px;
-  width: 60px;
-  height: 36px;
-  line-height: 36px;
-  cursor: pointer;
-}
-#context_menu .item:hover {
-  background: #eee;
-}
-.editor-box {
-  position: relative;
-  margin: 40px auto 0;
-  width: 80%;
-  height: 80%;
-  z-index: 9998;
-  background: #221;
-}
-.editor-box .head {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 30px;
-  line-height: 30px;
-  color: #eee;
-  vertical-align: middle;
-}
-.editor-box .head .head-title {
-  margin: 0;
-  padding-left: 20px;
-  float: left;
-  color: #eee;
-  font-size: 16px;
-  font-weight: 300;
-}
-.editor-box .head .head-btn {
-  float: right;
-  height: 30px;
-}
-.editor-box .head .icon {
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
-}
-.editor-box .con {
-  position: absolute;
-  top: 30px;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  padding-bottom: 10px;
-  background: #bbb;
-}
-.editor-box iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-.editor-full {
-  margin: 0;
-  width: 100%;
-  height: 100%;
 }
