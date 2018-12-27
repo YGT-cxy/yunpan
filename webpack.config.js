@@ -10,13 +10,13 @@ const extractLess = new ExtractTextPlugin({
 module.exports = {
     // 入口文件
     entry: {
-        login: './src/js/login.js',
-        index: './src/js/index.js',
-        home: './src/js/home.js',
-        userFile: './src/js/user-file.js',
-        editPass: './src/js/edit-pass.js',
-        forgetPass: './src/js/forget-pass.js',
-        ace: './src/js/ace.js',
+        login: './src/user/login.js',
+        forgetPass: './src/user/forget-pass.js',
+        index: './src/index/index.js',
+        home: './src/home/home.js',
+        userFile: './src/user-file/user-file.js',
+        editPass: './src/edit-pass/edit-pass.js',
+        ace: './src/ace/ace.js',
         // common: './src/js/common.js'  // 公共样式
     },
     // 输出
@@ -29,8 +29,7 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(['dist/']),
         new webpack.optimize.CommonsChunkPlugin({
-            // name: ['jquery'],  // 公共 chunk的名称
-            name: ['jquery'],  // 抽离webpack运行文件
+            name: ['jquery'],  // 公共 chunk的名称
             filename: 'js/[name].js',
             // minChunks: 2,
         }),
@@ -47,55 +46,50 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({  // index页
             filename: 'index.html',
-            template: './src/index.html',
+            template: './src/index/index.html',
             chunks: ['index', 'jquery']
         }),
         new HtmlWebpackPlugin({  // 用户登陆
             filename: 'login.html',
-            template: './src/login.html',
+            template: './src/user/login.html',
             chunks: ['login', 'jquery', 'errorCode']
         }),
         new HtmlWebpackPlugin({  // 用户注册
             filename: 'register.html',
-            template: './src/register.html',
+            template: './src/user/register.html',
             chunks: ['login', 'jquery', 'errorCode']
         }),
         new HtmlWebpackPlugin({  // home页
             filename: 'home.html',
-            template: './src/home.html',
+            template: './src/home/home.html',
             chunks: ['home', 'jquery']
         }),
         new HtmlWebpackPlugin({  // 用户文件
             filename: 'user-file.html',
-            template: './src/user-file.html',
+            template: './src/user-file/user-file.html',
             chunks: ['userFile', 'jquery', 'errorCode']
         }),
 
         new HtmlWebpackPlugin({  // 修改密码
             filename: 'edit-pass.html',
-            template: './src/edit-pass.html',
+            template: './src/edit-pass/edit-pass.html',
             chunks: ['editPass', 'jquery']
         }),
 
         new HtmlWebpackPlugin({  // 忘记密码
             filename: 'forget-pass.html',
-            template: './src/forget-pass.html',
+            template: './src/user/forget-pass.html',
             chunks: ['forgetPass', 'jquery']
         }),
 
         new HtmlWebpackPlugin({  // ace编辑器
             filename: 'ace.html',
-            template: './src/ace.html',
+            template: './src/ace/ace.html',
             chunks: ['ace', 'jquery']
         }),
 
-        // new HtmlWebpackPlugin({  // test页
-        //     filename: 'test.html',
-        //     template: './src/test.html',
-        //     chunks: ['home', 'jquery']
-        // }),
-
         extractLess,  // 分离less样式
+
         new CopyWebpackPlugin([{
             from: __dirname + '/src/lib/ace-builds-master/src-noconflict',  // 打包前的静态资源的目录地址
             to: __dirname + '/dist/lib/ace-builds-master/src-noconflict'  // 打包后的静态资源存放的目录地址
