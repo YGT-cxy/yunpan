@@ -467,11 +467,13 @@ $('#file-head').on('mousedown', '.resize', function(e) {
 
     var minWidth = parseInt(lastNode.css('min-width')),  // 最小宽度是元素css样式设置的min-width加上前面的几个元素宽度
         lastWidth = parseInt(lastNode.css('width')),  // 栏目当前的宽度
-        tools_class = $('#tools_class'),
-        tools_class_temp = $('#tools_class_temp'),
-        stylesheet = tools_class.html(),
-        stylesheet_temp = stylesheet,
         moveX = 0;
+
+    // 判断是否有宽度样式的Style
+    if($('#tools_class').length === 0) {
+        $('head').append('<style id="tools_class"></style>');
+    }
+
     document.onmousemove = function(e) {
             moveX = e.pageX - mouseOffsetX;  // 鼠标当前的移动位置 - 开始点击的位置  左 - 负  右 - 正
         var width = lastWidth + moveX,  // 当前鼠标移动后元素变化的宽度
@@ -479,17 +481,30 @@ $('#file-head').on('mousedown', '.resize', function(e) {
         // 判断条件，限制拖动的范围
         moveX = Math.min(maxWidth, Math.max(minWidth, width));
         lastNode.css('width', moveX);
-        // 设置列表里的各个栏目宽度
-        stylesheet += '.file-list-list .' + setClass + '{width:' + moveX + 'px !important;} ';
-        tools_class_temp.html(stylesheet);
-        // $('.' + setClass).css('width', moveX);
+        // 设置列表里的各个栏目宽度  栏目的宽度设置需要写入CSS规则  1、写在本地存储 2、写在styleSheets,通过正则匹配来处理  选择2来写入
+        setToolsStyleSheet(setClass, moveX);
     };
-    $this.on('mouseup', function() {
-        tools_class_temp.html('');
-        tools_class.html(stylesheet_temp += '.file-list-list .' + setClass + '{width:' + moveX + 'px !important;} ');
+
+    document.onmouseup = function() {
         document.onmousemove = null;
-    });
+        document.onmouseup = null;
+    };
 });
+
+// 设置文件列表的栏目的宽度样式
+function setToolsStyleSheet(className, w) {
+    var tools_class = $('#tools_class'),
+        stylesheet = tools_class.html(),
+        reg = new RegExp('\.' + className + '{width: [0-9]+px;}'),
+        cssStyle = '.' + className + '{width: ' + w + 'px;}';
+    if(reg.test(stylesheet)) {  // 有则直接替换
+        stylesheet = stylesheet.replace(reg, cssStyle);
+    } else {  // 否则增加一个样式
+        stylesheet += ' .file-list-list ' + cssStyle;
+    }
+
+    tools_class.html(stylesheet);
+}
 
 /**
  * 计算元素的宽度总和
