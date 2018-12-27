@@ -61,7 +61,7 @@ function readFile(fn) {
 
     // 发起读取文件的网络请求
     readFile(function(res) {
-        console.log(res);
+        // console.log(res);
         createAce(res.content);
     });
 } ());

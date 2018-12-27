@@ -262,13 +262,6 @@ function applyDataTemplate(data) {
     }
     var txtHtml = '';
     for(var i = 0, leng = data.length; i < leng; i++) {
-        // txtHtml  += `<tr id="${'file' + i}" class="file-${data[i].type}" data-type="${data[i].type}" data-basename="${data[i].basename}" data-extension="${data[i].extension}" data-json='${JSON.stringify(data[i])}'>
-        //                 <td class="file-name"><i class="icon-file icon-${data[i].extension ? data[i].extension: 'dir'}"></i>${data[i].basename}</td>
-        //                 <td class="file-size">${data[i].type === 'dir' ? '': bitToByte(data[i].size)}</td>
-        //                 <td class="file-create">${changeTime(data[i].filectime)}</td>
-        //                 <td class="file-update">${changeTime(data[i].filemtime)}</td>
-        //                 <td class="file-operation"><a class="btn-img btn-img-download" data-operation="download" title="下载文件" herf="javascript:;"></a></td>
-        //             </tr>`;
         txtHtml += `<div id="${'file' + i}" class="file-item" data-type="${data[i].type}" data-basename="${data[i].basename}" data-extension="${data[i].extension}">
                         <div class="file-name">
                             <i class="icon-file icon-${data[i].extension ? data[i].extension: 'dir'}"></i>
@@ -404,6 +397,8 @@ var treePath = '',  // 当前目录路径
         type: 'POST'
     });
 
+    // return ;
+
     var catalogType = location.search.slice(1).split('=')[1] || 'user',  // 默认是用户目录
         treePathTxt = '';
 
@@ -461,12 +456,59 @@ $('#nav').on('click', 'li', function() {
     FileOrDir.showDir(targetPath);  // 发起读取目录请求
 });
 
-// 给文件夹类型添加引入移出的点击效果
-// $('#file tbody').on('mouseover ', '.file-dir .file-name', function() {
-//     $(this).parent().css({'background': '#eee', 'cursor': 'pointer'});
-// }).on('mouseout', '.file-dir .file-name', function() {
-//     $(this).parent().css({'background': '#fff', 'cursor': 'default'});
-// });
+// 文件列表的头部tools的宽度
+$('#file-head').on('mousedown', '.resize', function(e) {
+    var $this = $(this),
+        lastNode = $this.prev(),
+        lastClass = lastNode.attr('class'),
+        setClass = 'file-' + lastClass.slice(4),
+        siblingsNode = $this.siblings().not(lastNode),
+        mouseOffsetX = e.pageX;
+
+    var minWidth = parseInt(lastNode.css('min-width')),  // 最小宽度是元素css样式设置的min-width加上前面的几个元素宽度
+        lastWidth = parseInt(lastNode.css('width')),  // 栏目当前的宽度
+        tools_class = $('#tools_class'),
+        tools_class_temp = $('#tools_class_temp'),
+        stylesheet = tools_class.html(),
+        stylesheet_temp = stylesheet,
+        moveX = 0;
+    document.onmousemove = function(e) {
+            moveX = e.pageX - mouseOffsetX;  // 鼠标当前的移动位置 - 开始点击的位置  左 - 负  右 - 正
+        var width = lastWidth + moveX,  // 当前鼠标移动后元素变化的宽度
+            maxWidth = parseInt($this.parent().css('width')) - getNodeWidth(siblingsNode);  // 最大宽度是整个容器宽度减去另外几个元素的宽度
+        // 判断条件，限制拖动的范围
+        moveX = Math.min(maxWidth, Math.max(minWidth, width));
+        lastNode.css('width', moveX);
+        // 设置列表里的各个栏目宽度
+        stylesheet += '.file-list-list .' + setClass + '{width:' + moveX + 'px !important;} ';
+        tools_class_temp.html(stylesheet);
+        // $('.' + setClass).css('width', moveX);
+    };
+    $this.on('mouseup', function() {
+        tools_class_temp.html('');
+        tools_class.html(stylesheet_temp += '.file-list-list .' + setClass + '{width:' + moveX + 'px !important;} ');
+        document.onmousemove = null;
+    });
+});
+
+/**
+ * 计算元素的宽度总和
+ * @param  {Array | jQuery} els 需要计算的元素的宽度
+ * @return {Number}     元素的宽度总和
+ */
+function getNodeWidth(els) {
+    var res = 0;
+    for(var i = 0, len = els.length; i < len; i++) {
+        res += parseInt($(els[i]).css('width'));
+    }
+    return res;
+}
+
+// TODO:开启菜单栏
+$('.file-content').on('contextmenu', function() {
+    console.log(this);
+    return false;
+});
 
 // 在文件列表里双击文件名字触发重命名事件
 $('.file-content').on('dblclick', '.file-name span', function(e) {
@@ -491,27 +533,13 @@ $('.file-content').on('dblclick', '.file-item', function(e) {
     return false;
 });
 
-
-// 在文件列表里单击文件名字触发的事件
-// $('#file tbody').on('mousedown', '.file-name', function(e) {
-//     $(this).attr('x', e.pageX).attr('y', e.pageY).off('click');
-// }).on('mouseup', '.file-name', function(e) {
-//     if (Math.abs(e.pageX - ($(this).attr('x') || 0)) <= 5 && Math.abs(e.pageY - ($(this).attr('y') || 0) <= 5)) {
-//         $(this).on('click', function() {
-//             openDirFile(this);
-//         });
-//     }
-// });
-
 // 进入下一级目录或打开文件(txt|php|html|js|css)或预览文件(pdf|images)
 function openDirFile(target) {
     var $this = $(target),
         fileName = $this.attr('data-basename');
 
     if($this.attr('data-type') === 'dir') {  // 进入目录
-        // var data = JSON.parse($this.attr('data-json')),
-            // filename = data.filename;  // 获取点击的文件名
-            treePath = treePath + '/' + fileName;  // 设置当前的目录路径
+        treePath = treePath + '/' + fileName;  // 设置当前的目录路径
 
         $('#nav ul').append('<li class="nav-item" data-path="' + treePath + '">' + fileName + '</li>');
         $('.file-content').html('');
@@ -543,6 +571,12 @@ function openDirFile(target) {
             case 'js':
                 fileData.type = 'javascript';
                 openAceEditor(fileData);
+                break;
+            case 'jpg':
+            case 'png':
+            case 'jpeg':
+            case 'gif':
+                showLoading('TODO：图片展示');
                 break;
             default:
                 showLoading('未知类型的文档，请联系开发者处理！');

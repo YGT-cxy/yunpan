@@ -18,6 +18,25 @@
     }
 }
 
+// 滚动条样式
+* {
+    &::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: rgba(180,180,180,0.2);
+        border-radius: 12px;
+        background-clip: padding-box;
+        border: 1px solid rgba(180,180,180,0.4);
+        min-height: 28px;
+    }
+    &::-webkit-scrollbar-track-piece {
+        background-color: rgba(180,180,180,0.06);
+        border-radius: 3px;
+    }
+}
+
 // 上传文件按钮组件样式
 .file-module {
     display: inline-block;
@@ -371,6 +390,7 @@ html, body {
     }
 
     & .resize {
+        position: relative;
         margin-left: -10px;
         width: 20px;
         height: 26px;
@@ -379,7 +399,7 @@ html, body {
 
     & .filename {
         padding-left: 20px;
-        width: calc(80% - 380px);
+        width: calc(80% - 330px);
         min-width: 180px;
         border-right: 1px solid #eee;
     }
@@ -420,26 +440,12 @@ html, body {
     min-width: 800px;
     background: #fff;
     overflow-y: auto;
-
-    &::-webkit-scrollbar {
-        width: 10px;
-        height: 10px;
-    }
-    &::-webkit-scrollbar-thumb {
-        background-color: rgba(180,180,180,0.2);
-        border-radius: 12px;
-        background-clip: padding-box;
-        border: 1px solid rgba(180,180,180,0.4);
-        min-height: 28px;
-    }
-    &::-webkit-scrollbar-track-piece {
-        background-color: rgba(180,180,180,0.06);
-        border-radius: 3px;
-    }
 }
 
 .file-content {
     padding: 10px 20px 40px 10px;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .file-foot {
@@ -481,9 +487,10 @@ html, body {
 // 文件列表样式
 .file-list-list {
     & .file-item {
-        font-size: 12px;
+        // width: 80%;
         height: 28px;
         line-height: 28px;
+        font-size: 12px;
         overflow: hidden;
 
         & > div {
@@ -497,15 +504,20 @@ html, body {
         }
 
         &:nth-child(2n-1) {
-            background: #fffbf1;
+            & > div {
+                background: #fffbf1;
+            }
         }
         &:hover {
             background: #cce8ff;
+            & > div {
+                background: #cce8ff;
+            }
         }
     }
     & .file-name {
         padding-left: 20px;
-        width: calc(80% - 380px);
+        width: calc(80% - 330px);
         min-width: 180px;
 
         & span {

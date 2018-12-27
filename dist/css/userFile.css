@@ -99,6 +99,21 @@
   height: 0;
   overflow: hidden;
 }
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(180, 180, 180, 0.2);
+  border-radius: 12px;
+  background-clip: padding-box;
+  border: 1px solid rgba(180, 180, 180, 0.4);
+  min-height: 28px;
+}
+*::-webkit-scrollbar-track-piece {
+  background-color: rgba(180, 180, 180, 0.06);
+  border-radius: 3px;
+}
 .file-module {
   display: inline-block;
   position: relative;
@@ -387,6 +402,7 @@ body {
   box-sizing: border-box;
 }
 #file-head .resize {
+  position: relative;
   margin-left: -10px;
   width: 20px;
   height: 26px;
@@ -394,7 +410,7 @@ body {
 }
 #file-head .filename {
   padding-left: 20px;
-  width: calc(80% - 380px);
+  width: calc(80% - 330px);
   min-width: 180px;
   border-right: 1px solid #eee;
 }
@@ -430,23 +446,10 @@ body {
   background: #fff;
   overflow-y: auto;
 }
-.file-main::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-.file-main::-webkit-scrollbar-thumb {
-  background-color: rgba(180, 180, 180, 0.2);
-  border-radius: 12px;
-  background-clip: padding-box;
-  border: 1px solid rgba(180, 180, 180, 0.4);
-  min-height: 28px;
-}
-.file-main::-webkit-scrollbar-track-piece {
-  background-color: rgba(180, 180, 180, 0.06);
-  border-radius: 3px;
-}
 .file-content {
   padding: 10px 20px 40px 10px;
+  height: 100%;
+  box-sizing: border-box;
 }
 .file-foot {
   position: fixed;
@@ -481,9 +484,9 @@ body {
   background: #eee;
 }
 .file-list-list .file-item {
-  font-size: 12px;
   height: 28px;
   line-height: 28px;
+  font-size: 12px;
   overflow: hidden;
 }
 .file-list-list .file-item > div {
@@ -495,15 +498,18 @@ body {
   cursor: default;
   box-sizing: border-box;
 }
-.file-list-list .file-item:nth-child(2n-1) {
+.file-list-list .file-item:nth-child(2n-1) > div {
   background: #fffbf1;
 }
 .file-list-list .file-item:hover {
   background: #cce8ff;
 }
+.file-list-list .file-item:hover > div {
+  background: #cce8ff;
+}
 .file-list-list .file-name {
   padding-left: 20px;
-  width: calc(80% - 380px);
+  width: calc(80% - 330px);
   min-width: 180px;
 }
 .file-list-list .file-name span {
