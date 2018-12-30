@@ -39,7 +39,7 @@ function FileOrDir() {
     this.ajax = ajaxCommon;
 }
 // 删除文件
-FileOrDir.prototype.delFile = function(fileName, fileId) {
+FileOrDir.prototype.delFile = function(fileName, fn) {
     var data = {
         'type': 'file',
         'path': this.path,
@@ -48,8 +48,9 @@ FileOrDir.prototype.delFile = function(fileName, fileId) {
     this.ajax('del', data, function(res) {
         if(res.isVaild) {
             showLoading(fileName + '文件删除成功!');
-            // FileOrDir.showDir(data.path);
-            $('#' + fileId).remove();
+            if(fn) {
+                fn();
+            }
         }
     });
 };
@@ -133,7 +134,7 @@ FileOrDir.showDir = function(path) {
 };
 
 // 删除目录
-FileOrDir.prototype.delDir = function(dirName, dirId) {
+FileOrDir.prototype.delDir = function(dirName, fn) {
     var data = {
         'type': 'dir',
         'path': this.path,
@@ -142,8 +143,9 @@ FileOrDir.prototype.delDir = function(dirName, dirId) {
     this.ajax('del', data, function(res) {
         if(res.isVaild) {
             showLoading(dirName + '文件夹删除成功!');
-            $('#' + dirId).remove();
-            // FileOrDir.showDir(data.type);  // TODO:不请求接口，删除当前的选项
+            if(fn) {
+                fn();
+            }
         }
     });
 };
@@ -260,16 +262,26 @@ function applyDataTemplate(data) {
     if(typeof data === 'string') {
         data = JSON.parse(data);
     }
-    var txtHtml = '';
+    var txtHtml = '',
+        extension,
+        filetype,
+        basename,
+        time,
+        filesize;
     for(var i = 0, leng = data.length; i < leng; i++) {
-        txtHtml += `<div id="${'file' + i}" class="file-item" data-type="${data[i].type}" data-basename="${data[i].basename}" data-extension="${data[i].extension}">
+        extension = data[i].extension;
+        filetype = data[i].type;
+        basename = data[i].basename;
+        time = changeTime(data[i].filemtime);
+        filesize = bitToByte(data[i].size);
+        txtHtml += `<div id="${'file' + i}" class="file-item" data-type="${filetype}" data-basename="${basename}" data-extension="${extension}">
                         <div class="file-name">
-                            <i class="icon-file icon-${data[i].extension ? data[i].extension: 'dir'}"></i>
-                            <span title="双击名称重命名">${data[i].basename}</span>
+                            <i class="icon-file icon-${extension ? extension: 'dir'}"></i>
+                            <span title="双击名称重命名">${basename}</span>
                         </div>
-                        <div class="file-type">${data[i].type === 'dir'? '文件夹' : data[i].extension + ' 文件'}</div>
-                        <div class="file-size">${data[i].type === 'dir' ? '': bitToByte(data[i].size)}</div>
-                        <div class="file-time">${changeTime(data[i].filemtime)}</div>
+                        <div class="file-type">${filetype === 'dir'? '文件夹' : extension + ' 文件'}</div>
+                        <div class="file-size">${filetype === 'dir' ? '': filesize}</div>
+                        <div class="file-time">${time}</div>
                         <div class="file-select"></div>
                     </div>`;
     }
@@ -461,7 +473,6 @@ $('#file-head').on('mousedown', '.resize', function(e) {
     var $this = $(this),
         lastNode = $this.prev(),
         lastClass = lastNode.attr('class'),
-        setClass = 'file-' + lastClass.slice(4),
         siblingsNode = $this.siblings().not(lastNode),
         mouseOffsetX = e.pageX;
 
@@ -481,8 +492,10 @@ $('#file-head').on('mousedown', '.resize', function(e) {
         // 判断条件，限制拖动的范围
         moveX = Math.min(maxWidth, Math.max(minWidth, width));
         lastNode.css('width', moveX);
+        // 设置列表的总宽度
+        setToolsStyleSheet('file-item', getNodeWidth($('#file-head').find('div[class^="file-"]')));
         // 设置列表里的各个栏目宽度  栏目的宽度设置需要写入CSS规则  1、写在本地存储 2、写在styleSheets,通过正则匹配来处理  选择2来写入
-        setToolsStyleSheet(setClass, moveX);
+        setToolsStyleSheet(lastClass, moveX);
     };
 
     document.onmouseup = function() {
@@ -492,6 +505,11 @@ $('#file-head').on('mousedown', '.resize', function(e) {
 });
 
 // 设置文件列表的栏目的宽度样式
+/**
+ * 设置文件列表的栏目的宽度样式
+ * @param {String} className 类名的样式名
+ * @param {Number} w         移动后的宽度
+ */
 function setToolsStyleSheet(className, w) {
     var tools_class = $('#tools_class'),
         stylesheet = tools_class.html(),
@@ -519,10 +537,73 @@ function getNodeWidth(els) {
     return res;
 }
 
-// TODO:开启菜单栏
-$('.file-content').on('contextmenu', function() {
-    console.log(this);
+/**
+ * 计算菜单栏显示时的top和left，防止超出页面
+ * @param  {Element} el 菜单栏元素
+ * @param  {Event} ev Event
+ * @return {Object}    返回一个对象，包括top和left。{top: top, left: left}
+ */
+function getElTop(el, ev) {
+    var $document = $(document),
+        $el = $(el),
+        w = parseInt($el.css('width')),
+        top, left;
+    if($document.height() - ev.pageY <= (parseInt($el.css('height')) + 20)){
+        top = ev.offsetY;
+    } else {
+        top = ev.pageY;
+    }
+
+    if($document.width() - ev.pageX <= w) {
+        left = ev.pageX - w;
+    } else {
+        left = ev.pageX;
+    }
+
+    return {
+        'top': top,
+        'left': left
+    };
+}
+
+// TODO:开启文件列表内容区的右键菜单栏
+$('.file-content').on('contextmenu', function(e) {
+    var position = getElTop('#menu', e);
+
+    $('#menu').show().css({
+        'top': position.top,
+        'left': position.left
+    });
+    $('#context_menu').remove();
     return false;
+});
+
+// 文件列表内容区的右键菜单栏
+$('#menu').on('click', 'li', function(e) {
+    $('#menu').hide();
+    var option = $(this).attr('data-option');
+    switch(option) {
+        case 'refresh':
+            FileOrDir.showDir(treePath);
+            break;
+        case 'upload':
+            $('#btn_update').trigger('click');
+            break;
+        case 'create-dir':
+        case 'create-file':
+            $('#btn_create').trigger('click');
+            break;
+        case 'paste':
+            try {
+                $('#btn_stickup').trigger('click');
+            } catch(err) {
+                showLoading('没有粘贴内容');
+            }
+            break;
+        default:
+            console.log('未定义');
+    }
+
 });
 
 // 在文件列表里双击文件名字触发重命名事件
@@ -542,7 +623,6 @@ $('.file-content').on('dblclick', '.file-name span', function(e) {
 
 // 在文件列表里双击文件触发的事件
 $('.file-content').on('dblclick', '.file-item', function(e) {
-    // console.log(this);
     openDirFile(this);
 }).on('selectstart', function(e) {  // 取消点击选中文件列表里的文本  (BUG：无法点击选中文本)
     return false;
@@ -564,72 +644,85 @@ function openDirFile(target) {
     } else {  // 打开文件
         var extension = $this.attr('data-extension'),  // 获取文件的后缀名类型
             fileData = {
-            'path': treePath,
-            'name': fileName,
-            'type': extension
-        };
+                'path': treePath,
+                'name': fileName,
+                'type': extension
+            },
+            extensionType = {
+                'txt': 'text',
+                'md': 'markdown',
+                'html': 'html',
+                'php': 'php',
+                'css': 'css',
+                'js': 'javascript'
+            };
 
-        switch(extension) {
-            case 'txt':
-                fileData.type = 'text';
-                openAceEditor(fileData);
-                break;
-            case 'md':
-                fileData.type = 'markdown';
-                openAceEditor(fileData);
-                break;
-            case 'html':
-            case 'php':
-            case 'css':
-                openAceEditor(fileData);
-                break;
-            case 'js':
-                fileData.type = 'javascript';
-                openAceEditor(fileData);
-                break;
-            case 'jpg':
-            case 'png':
-            case 'jpeg':
-            case 'gif':
-                showLoading('TODO：图片展示');
-                break;
-            default:
-                showLoading('未知类型的文档，请联系开发者处理！');
+        if(extensionType[extension]) {
+            fileData.type = extensionType[extension];
+            openAceEditor(fileData);
+        } else {
+            showLoading('未知类型，请联系开发者处理!');
         }
     }
 }
 
-// 下载文件
-$('#file tbody').on('click', '.btn-img-download', function() {
-    var parent = $(this).parent().parent(),
-        parentType = parent.attr('data-type'),
-        fileName = parent.attr('data-basename');
+// 打开编辑器
+function openAceEditor(data) {
+    var templateBox = $(document.createElement('div'));
 
-    if(parentType === 'dir') {  // 下载目录
-        location.href = 'http://kcloud.vowcloud.cn/api/v1/dir/download?token=' + TOKEN + '&type=dir&name=' + fileName + '&path=' + treePath;
-    } else {  // 下载文件
-        location.href = 'http://kcloud.vowcloud.cn/api/v1/file/download?token=' + TOKEN + '&type=file&name=' + fileName + '&path=' + treePath;
-    }
-});
+    templateBox.html(`<div class="editor-box">
+                                    <div class="head">
+                                        <h4 class="head-title">${data.name}</h4>
+                                        <div class="head-btn">
+                                            <span  class="icon icon-full" title="全屏"></span>
+                                            <span  class="icon icon-close" title="关闭编辑器"></span>
+                                        </div>
+                                    </div>
+                                    <div class="con">
+                                        <iframe src="ace.html?path=${data.path}&name=${data.name}&type=${data.type}"></iframe>
+                                    </div>
+                                </div>`)
+                .addClass('shade').show();
+    $('body').append(templateBox);
+
+    // 关闭编辑器
+    templateBox.on('click', '.icon-close', function() {
+        templateBox.remove();
+    });
+
+    // 全屏
+    templateBox.on('click', '.icon-full', function() {
+        $(this).removeClass('icon-full').addClass('icon-min');
+        templateBox.find('.editor-box').addClass('editor-full');
+    });
+
+    // 退出全屏
+    templateBox.on('click', '.icon-min', function() {
+        $(this).removeClass('icon-min').addClass('icon-full');
+        templateBox.find('.editor-box').removeClass('editor-full');
+    });
+}
 
 // 显示右键菜单
 $('.file-content').on('contextmenu', '.file-item', function(e) {
-    $('#context_menu').remove();
+    // $('#context_menu').remove();
     var $this = $(this),
-        menu = $(`<div id="context_menu">
-                    <ul>
-                        <li class="item">复制</li>
-                        <li class="item">剪切</li>
-                        <li class="item" style="display: none;">粘贴</li>
-                        <li class="item">重命名</li>
-                        <li class="item">删除</li>
-                    </ul>
-                </div>`);
-    $('body').append(menu);
+        file_menu = $('#file_menu');
+        // menu = $(`<div id="context_menu">
+        //             <ul>
+        //                 <li class="item">下载</li>
+        //                 <li class="item">复制</li>
+        //                 <li class="item">剪切</li>
+        //                 <li class="item" style="display: none;">粘贴</li>
+        //                 <li class="item">重命名</li>
+        //                 <li class="item">删除</li>
+        //             </ul>
+        //         </div>`);
+    // $('body').append(menu);
     // 计算右键菜单栏出现的位置
     var pageY = e.pageY,
         top = null,
-        menu_height = menu.height();
+        menu_height = file_menu.height();
 
     if($(document).height() - pageY <= (menu_height + 20)){
         top = pageY - menu_height;
@@ -637,77 +730,105 @@ $('.file-content').on('contextmenu', '.file-item', function(e) {
         top = pageY;
     }
 
-    menu.css({'top': top, 'left': e.clientX}).show()  // 显示菜单栏
-        .attr('data-id', $this.attr('id'))  // 添加数据
-        .attr('data-type', $this.attr('data-type'))
-        .attr('data-basename', $this.attr('data-basename'))
-        .attr('data-extension', $this.attr('data-extension'));
+    file_menu.css({'top': top, 'left': e.clientX}).show()  // 显示菜单栏
+        .attr('data-id', $this.attr('id'));  // 添加数据
 
     // 判断是否显示粘贴功能
-    if(localStorage.getItem('tempName')) {
-        menu.find('li').eq(2).show();
-    } else {
-        menu.find('li').eq(2).hide();
-    }
+    // if(localStorage.getItem('tempName')) {
+    //     menu.find('li').eq(2).show();
+    // } else {
+    //     menu.find('li').eq(2).hide();
+    // }
 
     return false;
 });
 
 // 取消右键菜单
-$(document).on('mousedown', function(e) {
-    // $('#context_menu').remove();
-    if(e.button === 0 && ($('#context_menu').css('display') === 'block') && e.target.className !== 'item') {
-        $('#context_menu').remove();
-    }
+$(document).on('mouseup', function(e) {
+    $('.menu-list').hide();
+    // if(e.button === 0 && ($('#file_menu').css('display') === 'block') && e.target.className !== 'item') {
+    //     $('#file_menu').hide();
+    // }
 });
 
 // 右键菜单里的事件
-$('body').on('click', '#context_menu', function(e) {
-    var optionText = e.target.innerHTML,  // 获取点击的操作
-        $this = $(this),
-        $id = $this.attr('data-id'),  // 获取文件列表里的的ID，以便操作
-        basename = $this.attr('data-basename'),  // 获取文件(夹)的名字
-        type = $this.attr('data-type'),  // 获取是文件类型还是文件夹类型
-        extension = $this.attr('data-extension');  // 获取后缀名
+$('#file_menu').on('click', 'li', function(e) {
+    var $this = $(this),
+        parent = $this.parent(),
+        option = $this.attr('data-option'),
+        $fileid = $('#' + parent.attr('data-id')),  // 获取文件列表里的的ID，找到操作的文件项
+        basename = $fileid.attr('data-basename'),  // 获取文件(夹)的名字
+        type = $fileid.attr('data-type'),  // 获取是文件类型还是文件夹类型
+        extension = $fileid.attr('data-extension');  // 获取后缀名
 
-    $this.remove();  // 隐藏模拟上下文菜单
-
-    // 缓存复制或剪切的数据
-    function setStickupData(stickup) {
-        localStorage.setItem('tempName', treePath + '/' + basename);
-        localStorage.setItem('operation', '{"stickup": "' + stickup + '", "type":"' + type + '"}');
-        $('#btn_stickup').show();
-    }
-
-    switch(optionText) {
-        case '复制':
-            setStickupData('copy');
+    $('.menu-list').hide();  // 隐藏模拟上下文菜单
+    switch(option) {
+        case 'open':
+            $fileid.trigger('dblclick');
             break;
-        case '剪切':
-            setStickupData('move');
+        case 'download':
+            downloadFile(type, basename);
             break;
-        case '粘贴':
+        case 'copy':
+            setStickupData('copy', basename, type);
+            break;
+        case 'cute':
+            setStickupData('move', basename, type);
+            break;
+        case 'paste':
             stickupFileDir();
             break;
-        case '重命名':
+        case 'rename':
             showRename({
                 'basename': basename,
                 'type': type,
                 'extension': extension
             });
             break;
-        default:  // 删除
+        case 'remove':
             if(type === 'dir') {  // 删除目录
                 showModal('删除文件', '是否删除' + basename + ' 文件夹', function() {
-                    new FileOrDir().delDir(basename, $id);
+                    new FileOrDir().delDir(basename, function() {
+                        $fileid.remove();
+                    });
                 });
             } else {  // 删除文件
                 showModal('删除文件', '是否删除' + basename + ' 文件', function() {
-                    new FileOrDir().delFile(basename, $id);
+                    new FileOrDir().delFile(basename, function() {
+                        $fileid.remove();
+                    });
                 });
             }
+            break;
+        default:
+            console.log('没有定义');
     }
 });
+
+/**
+ * 缓存复制或剪切的数据
+ * @param {String} stickup 参数说明：copy(复制)|move(剪切)
+ * @param {String} basename 文件(夹)名字，文件名需要携带后缀名
+ * @param {String} filetype dir(文件夹)|file(文件)
+ */
+function setStickupData(stickup, basename, filetype) {
+    localStorage.setItem('tempName', treePath + '/' + basename);
+    localStorage.setItem('operation', '{"stickup": "' + stickup + '", "type":"' + filetype + '"}');
+    $('#btn_stickup').show();
+}
+
+/**
+ * 下载文件或文件夹
+ * @param  {String} parentType 下载的类型，dir：文件夹|file：文件
+ * @param  {String} fileName   文件(夹)名字
+ */
+function downloadFile(parentType, fileName) {
+    if(parentType === 'dir') {  // 下载目录
+        location.href = 'http://kcloud.vowcloud.cn/api/v1/dir/download?token=' + TOKEN + '&type=dir&name=' + fileName + '&path=' + treePath;
+    } else {  // 下载文件
+        location.href = 'http://kcloud.vowcloud.cn/api/v1/file/download?token=' + TOKEN + '&type=file&name=' + fileName + '&path=' + treePath;
+    }
+}
 
 // 给粘贴文件(夹)的按钮添加粘贴事件
 $('#btn_stickup').on('click', function() {
@@ -823,14 +944,12 @@ function uploadFile() {
 
         // 设置头信息
         headers: {
-            // 'token': localStorage.getItem('token')
             'token': TOKEN
         },
 
         // 设置传入的参数
         formData: {
             'type': 'file',
-            // 'path': localStorage.getItem('path')  // 上传的路径
             'path': treePath  // 上传的路径
         },
 
@@ -930,10 +1049,10 @@ function uploadFile() {
         }
         FileOrDir.showDir(treePath);
     }
+    // 关闭上传
     $('#uploader .icon-close').on('click', function() {
         hideUploader();
     });
-
     $('#uploader').on('click', function(e) {
         if(e.target === this) {
             hideUploader();
@@ -1006,46 +1125,9 @@ function showRename(fileData) {
     });
 }
 
-// 打开编辑器
-function openAceEditor(data) {
-    var templateBox = $(document.createElement('div'));
-
-    templateBox.html(`<div class="editor-box">
-                                    <div class="head">
-                                        <h4 class="head-title">${data.name}</h4>
-                                        <div class="head-btn">
-                                            <span  class="icon icon-full" title="全屏"></span>
-                                            <span  class="icon icon-close" title="关闭编辑器"></span>
-                                        </div>
-                                    </div>
-                                    <div class="con">
-                                        <iframe src="ace.html?path=${data.path}&name=${data.name}&type=${data.type}"></iframe>
-                                    </div>
-                                </div>`)
-                .addClass('shade').show();
-    $('body').append(templateBox);
-
-    // 关闭编辑器
-    templateBox.on('click', '.icon-close', function() {
-        templateBox.remove();
-    });
-
-    // 全屏
-    templateBox.on('click', '.icon-full', function() {
-        $(this).removeClass('icon-full').addClass('icon-min');
-        templateBox.find('.editor-box').addClass('editor-full');
-    });
-
-    // 退出全屏
-    templateBox.on('click', '.icon-min', function() {
-        $(this).removeClass('icon-min').addClass('icon-full');
-        templateBox.find('.editor-box').removeClass('editor-full');
-    });
-}
-
 // F5刷新 重新加载当前目录的数据
 $('body').on('keydown', function(e) {
-    if(e.keyCode==116){
+    if(e.which === 116){
         FileOrDir.showDir(treePath);
         return false;
      }

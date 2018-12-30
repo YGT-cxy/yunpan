@@ -32,13 +32,13 @@
 
         <!-- 文件列表的头部栏目 -->
         <div id="file-head" class="clearfix">
-            <div class="filename">名字</div>
+            <div class="file-name">名字</div>
             <div class="resize filename-resize"></div>
-            <div class="filetype">类型</div>
+            <div class="file-type">类型</div>
             <div class="resize filetype-resize"></div>
-            <div class="filesize">大小</div>
+            <div class="file-size">大小</div>
             <div class="resize filesize-resize"></div>
-            <div class="filetime">修改时间</div>
+            <div class="file-time">修改时间</div>
             <div class="resize filetime-resize"></div>
         </div>
 
@@ -230,16 +230,66 @@
                 </div>
             </div>
         </div>
+        <ul id="menu" class="menu-list">
+            <li class="menu-list-item" data-option="refresh">
+                <i class="font-icon icon-refresh"></i><span>刷新</span>
+            </li>
+            <!-- <li class="menu-list-item">
+                <i class="font-icon icon-open"></i><span>打开</span>
+            </li> -->
+            <!-- <li class="menu-list-item">
+                <i class="font-icon icon-download"></i><span>下载</span>
+            </li> -->
+            <li class="menu-list-item" data-option="upload">
+                <i class="font-icon icon-upload"></i><span>上传</span>
+            </li>
+            <li class="menu-list-item" data-option="create-dir">
+                <i class="font-icon icon-create-dir"></i><span>创建文件夹</span>
+            </li>
+            <li class="menu-list-item" data-option="create-file">
+                <i class="font-icon icon-create-file"></i><span>创建文件</span>
+            </li>
+            <!-- <li class="menu-list-item">
+                <i class="font-icon icon-copy"></i><span>复制</span>
+            </li> -->
+            <!-- <li class="menu-list-item">
+                <i class="font-icon icon-cute"></i><span>剪切</span>
+            </li> -->
+            <li class="menu-list-item" data-option="paste">
+                <i class="font-icon icon-paste"></i><span>粘贴</span>
+            </li>
+            <!-- <li class="menu-list-item">
+                <i class="font-icon icon-remove"></i><span>删除</span>
+            </li>
+            <li class="menu-list-item">
+                <i class="font-icon icon-rename"></i><span>重命名</span>
+            </li> -->
+        </ul>
 
-        <!-- <div id="context_menu">
-            <ul>
-                <li class="item">复制</li>
-                <li class="item">剪切</li>
-                <li class="item" style="display: none;">粘贴</li>
-                <li class="item">重命名</li>
-                <li class="item">删除</li>
-            </ul>
-        </div> -->
+        <ul id="file_menu" class="menu-list">
+            <li class="menu-list-item" data-option="open">
+                <i class="font-icon icon-open"></i><span>打开</span>
+            </li>
+            <li class="menu-list-item" data-option="download">
+                <i class="font-icon icon-download"></i><span>下载</span>
+            </li>
+            <li class="menu-list-item" data-option="copy">
+                <i class="font-icon icon-copy"></i><span>复制</span>
+            </li>
+            <li class="menu-list-item" data-option="cute">
+                <i class="font-icon icon-cute"></i><span>剪切</span>
+            </li>
+            <li class="menu-list-item" data-option="paste">
+                <i class="font-icon icon-paste"></i><span>粘贴</span>
+            </li>
+            <li class="menu-list-item" data-option="remove">
+                <i class="font-icon icon-remove"></i><span>删除</span>
+            </li>
+            <li class="menu-list-item" data-option="rename">
+                <i class="font-icon icon-rename"></i><span>重命名</span>
+            </li>
+        </ul>
+
         <!-- 编辑器 -->
         <!-- <div class="shade" style="display: block;">
             <div class="editor-box">

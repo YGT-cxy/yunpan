@@ -408,20 +408,20 @@ body {
   height: 26px;
   cursor: col-resize;
 }
-#file-head .filename {
+#file-head .file-name {
   padding-left: 20px;
   width: calc(80% - 330px);
   min-width: 180px;
   border-right: 1px solid #eee;
 }
-#file-head .filetype {
+#file-head .file-type {
   margin-left: -10px;
   padding-left: 10px;
   min-width: 80px;
   width: 90px;
   border-right: 1px solid #eee;
 }
-#file-head .filesize {
+#file-head .file-size {
   margin-left: -10px;
   padding-right: 10px;
   min-width: 70px;
@@ -429,7 +429,7 @@ body {
   text-align: right;
   border-right: 1px solid #eee;
 }
-#file-head .filetime {
+#file-head .file-time {
   margin-left: -10px;
   padding-left: 10px;
   min-width: 150px;
@@ -451,42 +451,12 @@ body {
   height: 100%;
   box-sizing: border-box;
 }
-.file-foot {
-  position: fixed;
-  left: 20px;
-  bottom: 16px;
-  padding: 0 20px;
-  height: 30px;
-  line-height: 30px;
-  font-size: 12px;
-  color: #bbb;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.9);
-}
-.file-foot span:after {
-  content: "";
-  display: inline-block;
-  position: relative;
-  top: 3px;
-  left: 2px;
-  width: 3px;
-  height: 14px;
-  background: #eee;
-}
-.file-foot span:before {
-  content: "";
-  display: inline-block;
-  position: relative;
-  top: 3px;
-  left: -2px;
-  width: 3px;
-  height: 14px;
-  background: #eee;
-}
 .file-list-list .file-item {
+  width: 80%;
   height: 28px;
   line-height: 28px;
   font-size: 12px;
+  box-sizing: border-box;
   overflow: hidden;
 }
 .file-list-list .file-item > div {
@@ -509,7 +479,7 @@ body {
 }
 .file-list-list .file-name {
   padding-left: 20px;
-  width: calc(80% - 330px);
+  width: calc(100% - 330px);
   min-width: 180px;
 }
 .file-list-list .file-name span {
@@ -554,27 +524,103 @@ body {
   min-width: 150px;
   width: 160px;
 }
-#context_menu {
+.file-foot {
+  position: fixed;
+  left: 20px;
+  bottom: 16px;
+  padding: 0 20px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 12px;
+  color: #bbb;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.9);
+}
+.file-foot span:after {
+  content: "";
+  display: inline-block;
+  position: relative;
+  top: 3px;
+  left: 2px;
+  width: 3px;
+  height: 14px;
+  background: #eee;
+}
+.file-foot span:before {
+  content: "";
+  display: inline-block;
+  position: relative;
+  top: 3px;
+  left: -2px;
+  width: 3px;
+  height: 14px;
+  background: #eee;
+}
+.menu-list {
   display: none;
   position: absolute;
-  background: #fff;
-  font-size: 14px;
-}
-#context_menu ul {
-  margin: 0;
-  padding-left: 0;
+  top: 100px;
+  left: 200px;
+  padding: 8px 0;
   list-style: none;
-  border: 1px solid #bbb;
+  font-size: 12px;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  background: #fff;
 }
-#context_menu .item {
-  padding: 0 20px;
-  width: 60px;
-  height: 36px;
-  line-height: 36px;
+.menu-list-item {
+  padding: 0 16px 0 20px;
+  height: 24px;
+  line-height: 24px;
+  color: #222;
   cursor: pointer;
+  vertical-align: middle;
 }
-#context_menu .item:hover {
-  background: #eee;
+.menu-list-item:hover {
+  background: #cce8ff;
+}
+.menu-list .font-icon {
+  display: inline-block;
+  margin-right: 10px;
+  width: 16px;
+  height: 16px;
+  background-image: url(./../images/menu_icon.png);
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+.icon-refresh {
+  background-position: 0 -32px;
+}
+.icon-open {
+  background-position: 0 -48px;
+}
+.icon-download {
+  background-position: 0 0;
+}
+.icon-upload {
+  background-position: 0 -16px;
+}
+.icon-create-dir {
+  background-position: 0 -64px;
+}
+.icon-create-file {
+  background-position: 0 -80px;
+}
+.icon-copy {
+  background-position: 0 -112px;
+}
+.icon-cute {
+  background-position: 0 -128px;
+}
+.icon-paste {
+  background-position: 0 -144px;
+}
+.icon-remove {
+  background-position: 0 -96px;
+}
+.icon-rename {
+  background-position: 0 -160px;
 }
 .editor-box {
   position: relative;
